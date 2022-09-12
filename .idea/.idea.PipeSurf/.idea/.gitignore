@@ -1,0 +1,9 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/contentModel.xml
+/.idea.PipeSurf.iml
+/modules.xml
+/projectSettingsUpdater.xml
+/*/wwwroot
