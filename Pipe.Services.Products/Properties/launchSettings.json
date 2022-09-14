@@ -4,17 +4,17 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:40900",
-      "sslPort": 44355
+      "applicationUrl": "http://localhost:33836",
+      "sslPort": 44392
     }
   },
   "profiles": {
-    "Pipe.Web.API": {
+    "Products": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:10001;http://localhost:10002",
+      "applicationUrl": "https://localhost:10003;http://localhost:10004",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

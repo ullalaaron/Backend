@@ -1,5 +1,7 @@
-using Pipe.Web.API;
-using Pipe.Web.API.Services;
+using Microsoft.EntityFrameworkCore;
+using Products.Data;
+using Products.MappingConfigurators;
+using Products.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
@@ -11,8 +13,8 @@ builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
     config.SetBasePath(env.ContentRootPath)
         .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true) //load base settings
         .AddJsonFile("appsettings.Local.json", optional: false, reloadOnChange: true) //load local settings
-        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true) //load environment settings
-        .AddEnvironmentVariables();
+        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true); //load environment settings
+    // .AddEnvironmentVariables();
 
     if (args != null)
     {
@@ -22,18 +24,15 @@ builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
 
 IConfiguration configuration = builder.Configuration;
 // Add services to the container.
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddAutoMapper(typeof(ProductMappingConfigurator));
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.Configure<RouteOptions>(options => { options.LowercaseUrls = true; });
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-SD.ProductApiBaseUrl = configuration["ServiceUrls:ProductAPI"];
-builder.Services.AddHttpClient(SD.ProductApiClientName, client =>
-{
-    client.BaseAddress = new Uri(SD.ProductApiBaseUrl);
-});
 
-builder.Services.AddScoped<IProductService, ProductService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
